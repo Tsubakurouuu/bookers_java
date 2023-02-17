@@ -5,6 +5,7 @@
 		<title>Books</title>
 	</head>
 	<body>
+		<p th:if="${delcomplete}" th:text="${delcomplete}" style="color:green"></p>
 		<h1>Books</h1>
 		<table>
 			<tr>
@@ -25,7 +26,7 @@
 					</form>
 				</td>
 				<td>
-					<form method="POST" th:action="@{/book/delete}">
+					<form method="POST" th:action="@{/delete}">
 						<input type="hidden" name="id" th:value="${obj.id}">
 						<input type="submit" value="Destroy">
 					</form>
@@ -33,11 +34,13 @@
 			</tr>
 		</table>
 		<h2>New Book</h2>
-		<form method="POST" th:object="${bookForm}">
+		<form method="POST" th:action="@{create}" th:object="${bookForm}">
 			<label>Title</label><br>
 			<input type="text" th:field="*{title}"><br>
+			<div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" style="color: red"></div>
 			<label>Body</label><br>
 			<textarea rows="5" cols="50" th:field="*{body}"></textarea><br>
+			<div th:if="${#fields.hasErrors('body')}" th:errors="*{body}" style="color: red"></div>
 			<input type="submit" value="Create Book">
 		</form>
 	</body>
