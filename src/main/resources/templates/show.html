@@ -5,6 +5,7 @@
 		<title>Books</title>
 	</head>
 	<body>
+		<p th:if="${complete}" th:text="${complete}" style="color:green"></p>
 		<table>
 			<tr>
 				<th>Title:</th>
@@ -13,6 +14,23 @@
 			<tr>
 				<th>Body:</th>
 				<td th:text="${bookOpt.body}"></td>
+			</tr>
+		</table>
+		<table>
+			<tr>
+				<td>
+					<form method="GET" th:action="@{/book/{id}/edit(id=${bookOpt.id})}">
+						<input type="submit" value="Edit">
+					</form>
+				</td>
+				<td>
+					|
+				</td>
+				<td>
+					<form method="GET" th:action="@{/books}">
+						<input type="submit" value="Back">
+					</form>
+				</td>
 			</tr>
 		</table>
 	</body>

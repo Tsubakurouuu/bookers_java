@@ -34,7 +34,7 @@
 			</tr>
 		</table>
 		<h2>New Book</h2>
-		<form method="POST" th:action="@{create}" th:object="${bookForm}">
+		<form method="POST" th:action="@{/create}" th:object="${bookForm}">
 			<label>Title</label><br>
 			<input type="text" th:field="*{title}"><br>
 			<div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" style="color: red"></div>

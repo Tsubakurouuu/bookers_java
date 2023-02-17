@@ -6,14 +6,31 @@
 	</head>
 	<body>
 		<h1>Editing Book</h1>
-		<form method="POST" th:action="@{update}" th:object="${bookForm}">
+		<form method="POST" th:action="@{/update}">
 			<label>Title</label><br>
-			<input type="text" th:field="*{title}"><br>
-			<div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" style="color: red"></div>
+			<input type="text" th:field="${bookForm.title}"><br>
+			<div th:if="${#fields.hasErrors('bookForm.title')}" th:errors="${bookForm.title}" style="color: red"></div>
 			<label>Body</label><br>
-			<textarea rows="5" cols="50" th:field="*{body}"></textarea><br>
-			<div th:if="${#fields.hasErrors('body')}" th:errors="*{body}" style="color: red"></div>
+			<textarea rows="5" cols="50" th:field="${bookForm.body}"></textarea><br>
+			<div th:if="${#fields.hasErrors('bookForm.body')}" th:errors="${bookForm.body}" style="color: red"></div>
 			<input type="submit" value="Update Book">
 		</form>
+		<table>
+			<tr>
+				<td>
+					<form method="GET" th:action="@{/book/{id}(id=${bookForm.id})}">
+						<input type="submit" value="Show">
+					</form>
+				</td>
+				<td>
+					|
+				</td>
+				<td>
+					<form method="GET" th:action="@{/books}">
+						<input type="submit" value="Back">
+					</form>
+				</td>
+			</tr>
+		</table>
 	</body>
 </html>

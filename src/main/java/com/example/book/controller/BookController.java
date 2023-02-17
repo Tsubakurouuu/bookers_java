@@ -30,7 +30,7 @@ public class BookController {
 		return form;
 	}
 	
-	@GetMapping("books")
+	@GetMapping("/books")
 	public String index(BookForm bookForm, Model model) {
 		
 		Iterable<Book> list = service.selectAll();
@@ -39,7 +39,7 @@ public class BookController {
 		return "index";
 	}
 	
-	@PostMapping("create")
+	@PostMapping("/create")
 	public String insert(@Validated BookForm bookForm, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
 		Book book = new Book();
 		book.setTitle(bookForm.getTitle());
@@ -54,14 +54,14 @@ public class BookController {
 		}
 	}
 	
-	@GetMapping("book/{id}")
+	@GetMapping("/book/{id}")
 	public String show(@PathVariable Integer id, Model model) {
 		Optional<Book> bookOpt = service.selectOneById(id);
 		model.addAttribute("bookOpt", bookOpt.get());
 		return "show";
 	}
 	
-	@GetMapping("book/{id}/edit")
+	@GetMapping("/book/{id}/edit")
 	public String update(BookForm bookForm, @PathVariable Integer id, Model model) {
 		Optional<Book> bookOpt = service.selectOneById(id);
 		Optional<BookForm> bookFormOpt = bookOpt.map(t -> makeBookForm(t));
@@ -77,17 +77,16 @@ public class BookController {
 		model.addAttribute("bookForm", bookForm);
 	}
 	
-	@PostMapping("update")
+	@PostMapping("/update")
 	public String update(@Validated BookForm bookForm, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
 		Book book = makeBook(bookForm);
 		if(!result.hasErrors()) {
 			service.updateBook(book);
 			redirectAttributes.addFlashAttribute("complete", "Book was successfully updated.");
 			return "redirect:/book/" + book.getId();
-		}
-		else {
+		} else {
 			makeUpdateModel(bookForm, model);
-			return "books";
+			return "edit";
 		}
 	}
 	
