@@ -63,33 +63,45 @@ public class BookController {
 	
 	@GetMapping("/book/{id}/edit")
 	public String update(BookForm bookForm, @PathVariable Integer id, Model model) {
+		//Bookを取得(Optionalでラップ)
 		Optional<Book> bookOpt = service.selectOneById(id);
+		//BookFormへ詰め直し
 		Optional<BookForm> bookFormOpt = bookOpt.map(t -> makeBookForm(t));
+		//BookFormがnullでなければ中身を取り出す
 		if(bookFormOpt.isPresent()) {
 			bookForm = bookFormOpt.get();
 		}
+		//更新用のModelを作成する
 		makeUpdateModel(bookForm, model);
 		return "edit";
 	}
 	
+	//更新用のModelを作成する
 	private void makeUpdateModel(BookForm bookForm, Model model) {
 		model.addAttribute("id", bookForm.getId());
 		model.addAttribute("bookForm", bookForm);
 	}
 	
+	//idをkeyにしてデータを更新する
 	@PostMapping("/update")
 	public String update(@Validated BookForm bookForm, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
+		//BookFormからBookに詰めなおす
 		Book book = makeBook(bookForm);
+		//入力チェック
 		if(!result.hasErrors()) {
+			//更新処理、フラッシュスコープの使用、リダイレクト(個々の編集ページ)
 			service.updateBook(book);
 			redirectAttributes.addFlashAttribute("complete", "Book was successfully updated.");
+			//更新画面を表示する
 			return "redirect:/book/" + book.getId();
 		} else {
+			//更新用のModelを作成する
 			makeUpdateModel(bookForm, model);
 			return "edit";
 		}
 	}
 	
+	//BookFormからBookに詰めなおして戻り値として返す
 	private Book makeBook(BookForm bookForm) {
 		Book book = new Book();
 		book.setId(bookForm.getId());
@@ -98,6 +110,7 @@ public class BookController {
 		return book;
 	}
 	
+	//BookからBookFormに詰めなおして戻り値として返す
 	private BookForm makeBookForm(Book book) {
 		BookForm form = new BookForm();
 		form.setId(book.getId());

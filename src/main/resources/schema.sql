@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS book(
+    id INT NOT NULL AUTO_INCREMENT,
+    title VARCHAR(50),
+    body VARCHAR(50)
+);
